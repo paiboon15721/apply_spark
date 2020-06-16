@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container" id="app">
+    <h1>Spark demo</h1>
+    <form @submit.prevent="submit">
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" v-model="tweet" placeholder="Trying to tweet racist word and non racist word..." aria-label="Tweet here" aria-describedby="button-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="submit" id="button-addon2">Submit</button>
+        </div>
+      </div>
+    </form>
+    <div v-if="loading" class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div v-for="tweet in tweets" class="alert" :class="{'alert-primary': !tweet.racist, 'alert-danger': tweet.racist}" role="alert">
+      {{ tweet.text }}
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    var app = new Vue({
+      el: '#app',
+      data: {
+        loading: false,
+        tweet: '',
+        tweets: []
+      },
+      methods: {
+        submit: function(e) {
+          if (this.tweet) {
+            this.loading = true,
+            socket.emit("tweet", this.tweet)
+            this.tweet = ""
+          }
+        }
+      }
+    })
+  socket.on('predict', function(tweets) {
+    tweets.forEach(v => {
+      app.tweets.unshift({text: v[0], racist: v[1] === 1})
+      app.loading = false
+    })
+  })
+  </script>
+</body>
+</html>
