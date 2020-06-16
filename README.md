@@ -2,8 +2,6 @@
 
 This project is dedicated for demo spark streaming realtime analytic to classify hate speech using logistic regression algorithm.
 
-You can read more about
-
 ## Getting start
 
 This project required spark and nodejs
@@ -16,7 +14,7 @@ This project required spark and nodejs
 ## Start server
 
 1. run `npm install`
-2. edit start_server.sh script to adjust params that appropriate to your system.
+2. edit *start_server.sh* script to adjust params that appropriate to your system.
 3. start webserver using `npm start`
 4. start spark server `./start_server.sh`
 5. open webbrowser on http://localhost:3000
