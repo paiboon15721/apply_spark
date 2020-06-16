@@ -16,6 +16,7 @@ This project required spark and nodejs
 1. run `npm install`
 2. edit *start_server.sh* script to adjust params that appropriate to your system.
 3. start webserver using `npm start`
+![npm start](https://raw.githubusercontent.com/paiboon15721/apply_spark/master/screenshot/npm_start.png)
 4. start spark server `./start_server.sh`
 5. open webbrowser on http://localhost:3000
 
